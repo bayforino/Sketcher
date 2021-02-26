@@ -1,0 +1,1 @@
+A retro arty JavaScript-based web application utilising dynamically generated 'pixels'.
