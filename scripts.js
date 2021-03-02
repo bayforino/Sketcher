@@ -15,26 +15,25 @@ let isRandomColors = false;
 let lastBlockColor = `black`;
 let lastCanvasColor = `black`;
 
-
-function getRandomColorChannel(){
+function getRandomColorChannel() {
   return Math.floor(Math.random() * 256);
 }
-function getRandomColor(){
- let r = getRandomColorChannel(),
- g = getRandomColorChannel(),
- b = getRandomColorChannel(),
- a = Math.floor(Math.random() * 100);
+function getRandomColor() {
+  let r = getRandomColorChannel(),
+    g = getRandomColorChannel(),
+    b = getRandomColorChannel(),
+    a = Math.floor(Math.random() * 100);
 
- return `rgb(${r},${g},${b},${a})`;
+  return `rgb(${r},${g},${b},${a})`;
 }
 
-function onMouseOverGridBlock(event){
-  if (isRandomColors){
+function onMouseOverGridBlock(event) {
+  if (isRandomColors) {
     event.currentTarget.style.background = getRandomColor();
   } else {
     event.currentTarget.style.background = blockColor;
   }
-  event.currentTarget.classList.add('mousedOver');
+  event.currentTarget.classList.add("mousedOver");
 }
 
 function generateGrid() {
@@ -51,27 +50,25 @@ function generateGrid() {
   }
   let gridBlocks = document.getElementsByClassName("grid-block");
   gridblocks = Array.from(gridBlocks);
-  gridblocks.forEach(function(gridBlock){
+  gridblocks.forEach(function (gridBlock) {
     gridBlock.addEventListener("mouseover", onMouseOverGridBlock);
   });
 }
 
-
-
 function setColor() {
-  if (isRandomColors){
+  if (isRandomColors) {
     isRandomColors = false;
   }
   lastBlockColor = blockColor;
   blockColor = prompt("set brush colour");
-  if (blockColor === null){
+  if (blockColor === null) {
     blockColor = lastBlockColor;
   }
   brushInfo.textContent = `brush colour: ${blockColor}`;
 }
 
 function toggleRandomColors() {
-  if (isRandomColors){
+  if (isRandomColors) {
     isRandomColors = false;
     brushInfo.textContent = `brush colour: ${blockColor}`;
   } else {
@@ -88,12 +85,13 @@ function toggleRandomColors() {
 function setBg() {
   lastCanvasColor = bgColor;
   bgColor = prompt("set canvas colour (will reset your artwork!)");
-  if (bgColor === null){
+  if (bgColor === null) {
     bgColor = lastCanvasColor;
   } else {
-  generateGrid();
-  canvasInfo.textContent = `canvas colour: ${bgColor}`;
-}}
+    generateGrid();
+    canvasInfo.textContent = `canvas colour: ${bgColor}`;
+  }
+}
 
 function setGridSize() {
   let gridRequest = prompt("set grid size (max 100)");
@@ -105,8 +103,6 @@ function setGridSize() {
     gridInfo.textContent = `grid size: ${gridSize} x ${gridSize}`;
   }
 }
-
-
 
 generateGrid();
 
