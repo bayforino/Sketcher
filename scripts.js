@@ -4,12 +4,16 @@ const colButton = document.querySelector("#block-color-button");
 const bgButton = document.querySelector("#bg-color-button");
 const gridButton = document.querySelector("#grid-size-button");
 const randColButton = document.querySelector("#random-color-button");
+const brushInfo = document.querySelector("#brush-info");
+const canvasInfo = document.querySelector("#canvas-info");
+const gridInfo = document.querySelector("#grid-info");
 
 let bgColor = "white";
 let blockColor = "black";
 let gridSize = 50;
 let isRandomColors = false;
-
+let lastBlockColor = `black`;
+let lastCanvasColor = `black`;
 
 
 function getRandomColorChannel(){
@@ -55,20 +59,41 @@ function generateGrid() {
 
 
 function setColor() {
+  if (isRandomColors){
+    isRandomColors = false;
+  }
+  lastBlockColor = blockColor;
   blockColor = prompt("set brush colour");
+  if (blockColor === null){
+    blockColor = lastBlockColor;
+  }
+  brushInfo.textContent = `brush colour: ${blockColor}`;
 }
 
 function toggleRandomColors() {
   if (isRandomColors){
     isRandomColors = false;
+    brushInfo.textContent = `brush colour: ${blockColor}`;
   } else {
     isRandomColors = true;
+    brushInfo.innerHTML = `brush colour: 
+    <span style="color:${getRandomColor()}">r</span>
+    <span style="color:${getRandomColor()}">a</span>
+    <span style="color:${getRandomColor()}">n</span>
+    <span style="color:${getRandomColor()}">d</span>
+    <span style="color:${getRandomColor()}">o</span>
+    <span style="color:${getRandomColor()}">m</span>`;
   }
 }
 function setBg() {
-  bgColor = prompt("set canvas colour");
+  lastCanvasColor = bgColor;
+  bgColor = prompt("set canvas colour (will reset your artwork!)");
+  if (bgColor === null){
+    bgColor = lastCanvasColor;
+  } else {
   generateGrid();
-}
+  canvasInfo.textContent = `canvas colour: ${bgColor}`;
+}}
 
 function setGridSize() {
   let gridRequest = prompt("set grid size (max 100)");
@@ -77,11 +102,13 @@ function setGridSize() {
   } else {
     gridSize = gridRequest;
     generateGrid();
+    gridInfo.textContent = `grid size: ${gridSize} x ${gridSize}`;
   }
 }
 
-generateGrid();
 
+
+generateGrid();
 
 resetButton.addEventListener("click", generateGrid);
 colButton.addEventListener("click", setColor);

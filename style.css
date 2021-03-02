@@ -24,6 +24,17 @@ nav {
   letter-spacing: 12pt;
 }
 
+.blinking{
+  animation:blinkingText 1.2s infinite;
+}
+@keyframes blinkingText{
+  0%{     color: white;    }
+  49%{    color: white; }
+  60%{    color: transparent; }
+  99%{    color:transparent;  }
+  100%{   color: white;    }
+}
+
 #reset-button {
   grid-column-start: 3;
   grid-column-end: 4;
@@ -57,8 +68,8 @@ main {
   padding: 0;
   width: 80vw;
   height: 80vw;
-  max-width: 50em;
-  max-height: 50em;
+  max-width: 40em;
+  max-height: 40em;
   margin-bottom: 2em;
 }
 
@@ -89,11 +100,20 @@ main {
   width: 7em;
   margin-bottom: 2em;
   color:whitesmoke;
+  user-select: none;
 }
 
 .control-button:hover {
   background-color: whitesmoke;
   color: black;
+}
+
+.info{
+  color:white;
+  text-align: left;
+  width:100%;
+  margin-top: 2em;
+  user-select:none;
 }
 
 @media only screen and (max-width: 480px) {

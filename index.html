@@ -15,7 +15,7 @@
   </head>
   <body>
     <nav>
-      <div id="logo">sketcher</div>
+      <div id="logo"><span class="blinking">></span>sketcher</div>
     </nav>
 
     <main>
@@ -31,7 +31,13 @@
           <button id="grid-size-button" class="control-button">grid</br>size</button>
           <button id="git-hub-button" class="control-button" onclick="location.href='https://www.github.com/bayforino/Sketcher'">git</br>hub</button>
         </div>
-    </main>
+        <div class="info-container">
+        <div class="info" id="brush-info">brush colour: black</div>
+        <div class="info" id="canvas-info">canvas colour: white</div>
+        <div class="info" id="grid-info">grid size: 50 x 50</div>
+          </div>
+          </main>
+
     <script type="text/javascript" src="scripts.js"></script>
   </body>
 </html>
