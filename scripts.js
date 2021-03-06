@@ -14,6 +14,7 @@ let gridSize = 50;
 let isRandomColors = false;
 let lastBlockColor = `black`;
 let lastCanvasColor = `black`;
+toggleDrawing
 
 function getRandomColorChannel() {
   return Math.floor(Math.random() * 256);
@@ -27,13 +28,19 @@ function getRandomColor() {
   return `rgb(${r},${g},${b},${a})`;
 }
 
+function toggleDrawing(){
+  toggleDrawing === true ? toggleDrawing = false : toggleDrawing = true;
+}
+
 function onMouseOverGridBlock(event) {
+  if (toggleDrawing === true){
   if (isRandomColors) {
     event.currentTarget.style.background = getRandomColor();
   } else {
     event.currentTarget.style.background = blockColor;
   }
   event.currentTarget.classList.add("mousedOver");
+}
 }
 
 function generateGrid() {
@@ -111,5 +118,7 @@ colButton.addEventListener("click", setColor);
 bgButton.addEventListener("click", setBg);
 gridButton.addEventListener("click", setGridSize);
 randColButton.addEventListener("click", toggleRandomColors);
+gridContainer.addEventListener("mousedown", toggleDrawing);
+gridContainer.addEventListener("mouseup", toggleDrawing);
 
 // eggs
