@@ -83,6 +83,26 @@ main {
   margin-bottom: 2em;
 }
 
+@media only screen and (max-height: 930px){
+  .info{
+    font-size: 0.7em;
+  }
+  #grid-container{
+    width: 20em;
+    height: 20em;
+  }
+}
+
+@media only screen and (max-height: 730px){
+  #logo{
+    font-size: 0.5em;
+    letter-spacing: 0.5em;
+  }
+  nav{
+    padding: 1em;
+  }
+}
+
 .grid-block {
   margin: 0;
   border: whitesmoke;
