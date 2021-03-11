@@ -4,9 +4,11 @@ const colButton = document.querySelector("#block-color-button");
 const bgButton = document.querySelector("#bg-color-button");
 const gridButton = document.querySelector("#grid-size-button");
 const randColButton = document.querySelector("#random-color-button");
+const fillRandomColorButton = document.querySelector('#fill-random-button');
 const brushInfo = document.querySelector("#brush-info");
 const canvasInfo = document.querySelector("#canvas-info");
 const gridInfo = document.querySelector("#grid-info");
+
 
 let bgColor = "white";
 let blockColor = "black";
@@ -14,7 +16,7 @@ let gridSize = 50;
 let isRandomColors = false;
 let lastBlockColor = `black`;
 let lastCanvasColor = `black`;
-toggleDrawing
+
 
 function getRandomColorChannel() {
   return Math.floor(Math.random() * 256);
@@ -30,10 +32,13 @@ function getRandomColor() {
 
 function toggleDrawing(){
   toggleDrawing === true ? toggleDrawing = false : toggleDrawing = true;
+  console.log('toggling drawing');
 }
 
 function onMouseOverGridBlock(event) {
+  
   if (toggleDrawing === true){
+    console.log('drawing')
   if (isRandomColors) {
     event.currentTarget.style.background = getRandomColor();
   } else {
@@ -59,6 +64,7 @@ function generateGrid() {
   gridblocks = Array.from(gridBlocks);
   gridblocks.forEach(function (gridBlock) {
     gridBlock.addEventListener("mouseover", onMouseOverGridBlock);
+ 
   });
 }
 
@@ -111,6 +117,28 @@ function setGridSize() {
   }
 }
 
+function fillRandomColors(){
+
+  const squares = document.querySelectorAll(".grid-block");
+squares.forEach(square => {
+  square.setAttribute(`style`, `background: ${getRandomColor()}`);
+});
+}
+
+function fillGradient(){
+
+  const squares = document.querySelectorAll(".grid-block");
+  let r = 1,
+      g = 1,
+      b = 1;
+squares.forEach(square => {
+  square.setAttribute(`style`, `background: rgb(${r}, ${g}, ${b})`);
+  r++;
+  g++;
+  b++;
+});
+}
+
 generateGrid();
 
 resetButton.addEventListener("click", generateGrid);
@@ -118,7 +146,30 @@ colButton.addEventListener("click", setColor);
 bgButton.addEventListener("click", setBg);
 gridButton.addEventListener("click", setGridSize);
 randColButton.addEventListener("click", toggleRandomColors);
+fillRandomColorButton.addEventListener("click", fillRandomColors);
+
 gridContainer.addEventListener("mousedown", toggleDrawing);
 gridContainer.addEventListener("mouseup", toggleDrawing);
+
+gridContainer.addEventListener("touchstart", toggleDrawing, false);
+gridContainer.addEventListener("touchend", toggleDrawing, false);
+gridContainer.addEventListener("touchmove", function (e) {
+  let touch = e.touches[0];
+  let mouseEvent = new MouseEvent("mousemove", {
+    clientX: touch.clientX,
+    clientY: touch.clientY
+  });
+  gridContainer.dispatchEvent(mouseEvent);
+})
+
+
+
+gridContainer.ontouchstart = (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+}
+
+
+
 
 // eggs
