@@ -1,3 +1,5 @@
+// @ts-check
+
 const gridContainer = document.querySelector("#grid-container");
 const resetButton = document.querySelector("#reset-button");
 const colButton = document.querySelector("#block-color-button");
@@ -232,9 +234,9 @@ function loadStoredData() {
 }
 
 function addGridBlocksEventListeners() {
-  let gridBlocks = document.getElementsByClassName("grid-block");
-  gridblocks = Array.from(gridBlocks);
-  gridblocks.forEach(function (gridBlock) {
+  
+  let gridBlocks = Array.from(document.getElementsByClassName("grid-block"));
+  gridBlocks.forEach(function (gridBlock) {
     gridBlock.addEventListener("mouseover", onMouseOverGridBlock);
   });
 }
@@ -275,11 +277,18 @@ window.addEventListener("touchstart", toggleDrawingOnOff, false);
 window.addEventListener("touchend", toggleDrawingOnOff, false);
 window.addEventListener("touchmove", function (e) {
   let touch = e.touches[0];
-  let mouseEvent = new MouseEvent("mousemove", {
-    clientX: touch.clientX,
-    clientY: touch.clientY,
-  });
-  e.target.dispatchEvent(mouseEvent);
+
+  let blockToColor = document.elementFromPoint(touch.clientX, touch.clientY);
+  console.log(blockToColor);
+  blockToColor.setAttribute('style', `background: ${blockColor}`);
+  blockToColor.classList.add('mousedover', 'drawn');
+  updateStorage();
+  // let mouseEvent = new MouseEvent("mouseMove", {
+  //   clientX: touch.clientX,
+  //   clientY: touch.clientY,
+  // });
+  // window.dispatchEvent(mouseEvent);
+  // console.log(e.touches[0].target);
 });
 
 gridContainer.ontouchstart = (e) => {

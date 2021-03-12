@@ -151,6 +151,12 @@ main {
   user-select: none;
 }
 
+.me{
+  color:rgb(57, 116, 224);
+  font-size: 0.8em;
+  margin-top: 4em;
+}
+
 @media only screen and (max-width: 480px) {
   #logo {
     font-size: 0.7em;
@@ -169,14 +175,39 @@ main {
   }
 
   #grid-container {
-    margin-bottom: 0.5em;
+    margin-bottom: 0;
+  }
+
+  #control-container{
+    margin-bottom: 0.6em;
   }
 
   .control-button {
-    font-size: 0.8em;
+    font-size: 0.7em;
+    margin-bottom: 0.5em;
+  }
+
+  .control-button:hover{
+    background-color:white;
+  }
+  
+  .me{
+    font-size:0.5em;
+    margin-top: 2.5em;
   }
 
   nav {
     padding: 1em;
+  }
+  
+
+  
+}
+
+
+@media only screen and (max-width: 377px){
+  #grid-container{
+    max-height: 40vh;
+    max-width: 40vh;
   }
 }
