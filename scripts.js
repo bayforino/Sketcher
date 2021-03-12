@@ -1,5 +1,3 @@
-// @ts-check
-
 const gridContainer = document.querySelector("#grid-container");
 const resetButton = document.querySelector("#reset-button");
 const colButton = document.querySelector("#block-color-button");
@@ -283,12 +281,6 @@ window.addEventListener("touchmove", function (e) {
   blockToColor.setAttribute('style', `background: ${blockColor}`);
   blockToColor.classList.add('mousedover', 'drawn');
   updateStorage();
-  // let mouseEvent = new MouseEvent("mouseMove", {
-  //   clientX: touch.clientX,
-  //   clientY: touch.clientY,
-  // });
-  // window.dispatchEvent(mouseEvent);
-  // console.log(e.touches[0].target);
 });
 
 gridContainer.ontouchstart = (e) => {
