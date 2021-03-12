@@ -137,6 +137,9 @@ function fillRandomColors() {
   generateGrid();
   const squares = document.querySelectorAll(".grid-block");
   squares.forEach((square) => {
+    if (square.classList.contains(`drawn`)) {
+      return;
+    }
     square.setAttribute(`style`, `background: ${getRandomColor()}`);
   });
 }
@@ -232,7 +235,6 @@ function loadStoredData() {
 }
 
 function addGridBlocksEventListeners() {
-  
   let gridBlocks = Array.from(document.getElementsByClassName("grid-block"));
   gridBlocks.forEach(function (gridBlock) {
     gridBlock.addEventListener("mouseover", onMouseOverGridBlock);
@@ -278,8 +280,12 @@ window.addEventListener("touchmove", function (e) {
 
   let blockToColor = document.elementFromPoint(touch.clientX, touch.clientY);
   console.log(blockToColor);
-  blockToColor.setAttribute('style', `background: ${blockColor}`);
-  blockToColor.classList.add('mousedover', 'drawn');
+  if (isRandomColors) {
+    blockToColor.setAttribute("style", `background: ${getRandomColor()}`);
+  } else {
+    blockToColor.setAttribute("style", `background: ${blockColor}`);
+  }
+  blockToColor.classList.add("mousedover", "drawn");
   updateStorage();
 });
 
