@@ -81,6 +81,8 @@ main {
   max-width: 80vw;
   max-height: 80vw;
   margin-bottom: 2em;
+  column-gap: 0;
+  row-gap: 0;
 }
 
 @media only screen and (max-height: 930px){
@@ -105,8 +107,10 @@ main {
 
 .grid-block {
   margin: 0;
-  border: whitesmoke;
-  border-width: 2px;
+  border: none;
+  border-image-width: 0;
+  height:100%;
+  width:100%;
 }
 
 #control-container {
@@ -117,6 +121,7 @@ main {
   justify-content: space-around;
   align-content: center;
   flex-wrap: wrap;
+  max-width: 40em;
 }
 
 .control-button {

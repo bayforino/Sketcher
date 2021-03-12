@@ -1,3 +1,5 @@
+
+
 const gridContainer = document.querySelector("#grid-container");
 const resetButton = document.querySelector("#reset-button");
 const colButton = document.querySelector("#block-color-button");
@@ -5,8 +7,8 @@ const bgButton = document.querySelector("#bg-color-button");
 const gridButton = document.querySelector("#grid-size-button");
 const randColButton = document.querySelector("#random-color-button");
 const fillRandomColorButton = document.querySelector("#fill-random-button");
-const fillPatternButton = document.querySelector("#fill-pattern-button");
 const randomPatternButton = document.querySelector("#random-pattern-button");
+const saveButton = document.querySelector('#save-button');
 const brushInfo = document.querySelector("#brush-info");
 const canvasInfo = document.querySelector("#canvas-info");
 const gridInfo = document.querySelector("#grid-info");
@@ -133,79 +135,34 @@ function fillRandomColors() {
   });
 }
 
-function fillPattern() {
-  setBg(event);
-  let seed = prompt(`Enter a seed number`);
-  let patternColor = prompt(`Enter a colour for your pattern`);
-  let offset = prompt(`Enter an offset value`);
-  let offsetColor = prompt(`Enter an offset colour`);
-  const squares = document.querySelectorAll(".grid-block");
-  squares.forEach(square => {
-    square.classList.remove(`done`);
-  })
-  for (i = 0; i < squares.length; i++) {
-    if (squares[i].classList.contains("done")) {
-      continue;
-    } else {
-      if (i % parseInt(seed) === 0) {
-        if (!squares[i].classList.contains("drawn")) {
-          squares[i].setAttribute(`style`, `background: ${patternColor}`);
-        }
-        
-
-        if (i + parseInt(offset) >= squares.length) {
-          continue;
-        } else {
-          if (squares[i + parseInt(offset)].classList.contains("drawn")){
-            continue;
-          } else {
-            squares[i + parseInt(offset)].setAttribute(
-              `style`,
-              `background: ${offsetColor}`
-            );
-            squares[i + parseInt(offset)].classList.add("done");
-          }
-
-          
-        }
-      } else {
-        if (squares[i].classList.contains("drawn")) {
-          continue;
-        } else {
-          squares[i].setAttribute(`style`, `background: ${bgColor}`);
-        }
-      }
-    }
-  }
-}
-
 function randomPattern() {
   setBg(event);
-  let offset = Math.floor(Math.random() * 30 + 1);
-  let seed = Math.floor(Math.random() * 30 + 1);
-  if (seed === offset) {
-    offset += 1;
+  function randomNumber(num) {
+    return Math.floor(Math.random() * num + 1);
   }
+  let num1 = randomNumber(15);
+  let num2 = randomNumber(15);
+  let bg = getRandomColor();
+  let offset = randomNumber(10);
   const squares = document.querySelectorAll(".grid-block");
   const patternColor = getRandomColor();
   const offsetColor = getRandomColor();
-  squares.forEach(square => {
+  squares.forEach((square) => {
     square.classList.remove(`done`);
-  })
+  });
   for (i = 0; i < squares.length; i++) {
     if (squares[i].classList.contains("done")) {
       continue;
     } else {
-      if (i % seed === 0) {
+      if (i % num1 === 0 || i % num2 === 0) {
         if (!squares[i].classList.contains("drawn")) {
           squares[i].setAttribute(`style`, `background: ${patternColor}`);
         }
-        
 
         if (i + offset >= squares.length) {
           continue;
         } else {
-          if (squares[i + offset].classList.contains("drawn")){
+          if (squares[i + offset].classList.contains("drawn")) {
             continue;
           } else {
             squares[i + offset].setAttribute(
@@ -214,19 +171,41 @@ function randomPattern() {
             );
             squares[i + offset].classList.add("done");
           }
-
-          
         }
       } else {
         if (squares[i].classList.contains("drawn")) {
           continue;
         } else {
-          squares[i].setAttribute(`style`, `background: ${bgColor}`);
+          squares[i].setAttribute(`style`, `background: ${bg}`);
         }
       }
     }
   }
 }
+
+function screenShot(){
+  html2canvas(document.querySelector("#grid-container")).then(canvas => {
+    saveAs(canvas.toDataURL(), 'sketcher.png');
+  });
+  }
+  
+  function saveAs(url, filename){
+    let link = document.createElement('a');
+  
+    if (typeof link.download === 'string'){
+      link.href = url;
+      link.download = filename;
+  
+      document.body.appendChild(link);
+  
+    
+      link.click();
+  
+      document.body.removeChild(link);
+    } else {
+      window.open(url);
+    }
+  }
 
 generateGrid();
 
@@ -236,8 +215,8 @@ bgButton.addEventListener("click", setBg);
 gridButton.addEventListener("click", setGridSize);
 randColButton.addEventListener("click", toggleRandomColors);
 fillRandomColorButton.addEventListener("click", fillRandomColors);
-fillPatternButton.addEventListener("click", fillPattern);
 randomPatternButton.addEventListener("click", randomPattern);
+saveButton.addEventListener("click", screenShot);
 
 gridContainer.addEventListener("touchstart", toggleDrawing, false);
 gridContainer.addEventListener("touchend", toggleDrawing, false);
@@ -254,6 +233,8 @@ gridContainer.ontouchstart = (e) => {
   e.preventDefault();
   e.stopPropagation();
 };
+
+
 
 gridContainer.addEventListener("mousedown", toggleDrawing);
 gridContainer.addEventListener("mouseup", toggleDrawing);
