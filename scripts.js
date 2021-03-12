@@ -1,5 +1,3 @@
-
-
 const gridContainer = document.querySelector("#grid-container");
 const resetButton = document.querySelector("#reset-button");
 const colButton = document.querySelector("#block-color-button");
@@ -8,7 +6,7 @@ const gridButton = document.querySelector("#grid-size-button");
 const randColButton = document.querySelector("#random-color-button");
 const fillRandomColorButton = document.querySelector("#fill-random-button");
 const randomPatternButton = document.querySelector("#random-pattern-button");
-const saveButton = document.querySelector('#save-button');
+const saveButton = document.querySelector("#save-button");
 const brushInfo = document.querySelector("#brush-info");
 const canvasInfo = document.querySelector("#canvas-info");
 const gridInfo = document.querySelector("#grid-info");
@@ -22,16 +20,12 @@ let lastBlockColor = `black`;
 let lastCanvasColor = `black`;
 let toggleDrawing = false;
 
-function initialGenerateGrid(){
+function initialGenerateGrid() {
   generateGrid();
-  if (localStorage.getItem('storedData')){
+  if (localStorage.getItem("storedData")) {
     loadStoredData();
   }
-
-  
 }
-
-//work out why all random saves date
 
 function getRandomColorChannel() {
   return Math.floor(Math.random() * 256);
@@ -46,10 +40,10 @@ function getRandomColor() {
 }
 
 function toggleDrawingOnOff() {
-  if (toggleDrawing === true){
+  if (toggleDrawing === true) {
     toggleDrawing = false;
     updateStorage();
-  } else if (toggleDrawing === false){
+  } else if (toggleDrawing === false) {
     toggleDrawing = true;
   }
 }
@@ -84,8 +78,6 @@ function setBg(event) {
     }
   });
 }
-
-
 
 function generateGrid() {
   gridContainer.innerHTML = "";
@@ -198,77 +190,75 @@ function randomPattern() {
   updateStorage();
 }
 
-function screenShot(){
-  html2canvas(document.querySelector("#grid-container")).then(canvas => {
-    saveAs(canvas.toDataURL(), 'sketcher.png');
+function screenShot() {
+  html2canvas(document.querySelector("#grid-container")).then((canvas) => {
+    saveAs(canvas.toDataURL(), "sketcher.png");
   });
-  }
-  
-  function saveAs(url, filename){
-    let link = document.createElement('a');
-  
-    if (typeof link.download === 'string'){
-      link.href = url;
-      link.download = filename;
-  
-      document.body.appendChild(link);
-  
-    
-      link.click();
-  
-      document.body.removeChild(link);
-    } else {
-      window.open(url);
-    }
-  }
+}
 
-  function updateStorage() {
-    if (storageAvailable(`localStorage`)) {
-      storedData = JSON.stringify(gridContainer.innerHTML);
-      localStorage.setItem(`storedData`, storedData);
-    }
+function saveAs(url, filename) {
+  let link = document.createElement("a");
+
+  if (typeof link.download === "string") {
+    link.href = url;
+    link.download = filename;
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+  } else {
+    window.open(url);
   }
+}
 
-  function loadStoredData() {
-    if (
-      localStorage.getItem("storedData") &&
-      localStorage.getItem("storedData") !== "[]"
-    ) {
-      storedData = JSON.parse(localStorage.getItem("storedData"));
-      gridContainer.innerHTML = storedData;
-    }
-    addGridBlocksEventListeners();
-    }
+function updateStorage() {
+  if (storageAvailable(`localStorage`)) {
+    storedData = JSON.stringify(gridContainer.innerHTML);
+    localStorage.setItem(`storedData`, storedData);
+  }
+}
 
-  function addGridBlocksEventListeners(){
-    let gridBlocks = document.getElementsByClassName("grid-block");
+function loadStoredData() {
+  if (
+    localStorage.getItem("storedData") &&
+    localStorage.getItem("storedData") !== "[]"
+  ) {
+    storedData = JSON.parse(localStorage.getItem("storedData"));
+    gridContainer.innerHTML = storedData;
+  }
+  addGridBlocksEventListeners();
+}
+
+function addGridBlocksEventListeners() {
+  let gridBlocks = document.getElementsByClassName("grid-block");
   gridblocks = Array.from(gridBlocks);
   gridblocks.forEach(function (gridBlock) {
     gridBlock.addEventListener("mouseover", onMouseOverGridBlock);
-  })}
+  });
+}
 
-  function storageAvailable(type) {
-    let storage;
-    try {
-      storage = window[type];
-      let x = "__storage_test__";
-      storage.setItem(x, x);
-      storage.removeItem(x);
-      return true;
-    } catch (e) {
-      return (
-        e instanceof DOMException &&
-        (e.code === 22 ||
-          e.code === 1014 ||
-          e.name === "QuotaExceededError" ||
-          e.name === "NS_ERROR_DOM_QUOTA_REACHED") &&
-        storage &&
-        storage.length !== 0
-      );
-    }
+function storageAvailable(type) {
+  let storage;
+  try {
+    storage = window[type];
+    let x = "__storage_test__";
+    storage.setItem(x, x);
+    storage.removeItem(x);
+    return true;
+  } catch (e) {
+    return (
+      e instanceof DOMException &&
+      (e.code === 22 ||
+        e.code === 1014 ||
+        e.name === "QuotaExceededError" ||
+        e.name === "NS_ERROR_DOM_QUOTA_REACHED") &&
+      storage &&
+      storage.length !== 0
+    );
   }
-
-
+}
 
 initialGenerateGrid();
 
@@ -296,8 +286,6 @@ gridContainer.ontouchstart = (e) => {
   e.preventDefault();
   e.stopPropagation();
 };
-
-
 
 window.addEventListener("mousedown", toggleDrawingOnOff);
 window.addEventListener("mouseup", toggleDrawingOnOff);
