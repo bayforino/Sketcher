@@ -13,12 +13,25 @@ const brushInfo = document.querySelector("#brush-info");
 const canvasInfo = document.querySelector("#canvas-info");
 const gridInfo = document.querySelector("#grid-info");
 
+let storedData;
 let bgColor = "white";
 let blockColor = "black";
 let gridSize = 50;
 let isRandomColors = false;
 let lastBlockColor = `black`;
 let lastCanvasColor = `black`;
+let toggleDrawing = false;
+
+function initialGenerateGrid(){
+  generateGrid();
+  if (localStorage.getItem('storedData')){
+    loadStoredData();
+  }
+
+  
+}
+
+//work out why all random saves date
 
 function getRandomColorChannel() {
   return Math.floor(Math.random() * 256);
@@ -32,9 +45,13 @@ function getRandomColor() {
   return `rgb(${r},${g},${b},${a})`;
 }
 
-function toggleDrawing() {
-  toggleDrawing === true ? (toggleDrawing = false) : (toggleDrawing = true);
-  console.log("toggling drawing");
+function toggleDrawingOnOff() {
+  if (toggleDrawing === true){
+    toggleDrawing = false;
+    updateStorage();
+  } else if (toggleDrawing === false){
+    toggleDrawing = true;
+  }
 }
 
 function onMouseOverGridBlock(event) {
@@ -50,7 +67,6 @@ function onMouseOverGridBlock(event) {
 }
 
 function setBg(event) {
-  console.log(event);
   if (event.currentTarget === bgButton) {
     let lastBgColor = bgColor;
     bgColor = prompt(`Select a background colour`);
@@ -69,6 +85,8 @@ function setBg(event) {
   });
 }
 
+
+
 function generateGrid() {
   gridContainer.innerHTML = "";
   for (i = 0; i < gridSize * gridSize; i++) {
@@ -81,11 +99,7 @@ function generateGrid() {
       `grid-template-columns: repeat(${gridSize}, auto); grid-template-rows: repeat(${gridSize}, auto);`
     );
   }
-  let gridBlocks = document.getElementsByClassName("grid-block");
-  gridblocks = Array.from(gridBlocks);
-  gridblocks.forEach(function (gridBlock) {
-    gridBlock.addEventListener("mouseover", onMouseOverGridBlock);
-  });
+  addGridBlocksEventListeners();
 }
 
 function setColor() {
@@ -181,6 +195,7 @@ function randomPattern() {
       }
     }
   }
+  updateStorage();
 }
 
 function screenShot(){
@@ -207,7 +222,55 @@ function screenShot(){
     }
   }
 
-generateGrid();
+  function updateStorage() {
+    if (storageAvailable(`localStorage`)) {
+      storedData = JSON.stringify(gridContainer.innerHTML);
+      localStorage.setItem(`storedData`, storedData);
+    }
+  }
+
+  function loadStoredData() {
+    if (
+      localStorage.getItem("storedData") &&
+      localStorage.getItem("storedData") !== "[]"
+    ) {
+      storedData = JSON.parse(localStorage.getItem("storedData"));
+      gridContainer.innerHTML = storedData;
+    }
+    addGridBlocksEventListeners();
+    }
+
+  function addGridBlocksEventListeners(){
+    let gridBlocks = document.getElementsByClassName("grid-block");
+  gridblocks = Array.from(gridBlocks);
+  gridblocks.forEach(function (gridBlock) {
+    gridBlock.addEventListener("mouseover", onMouseOverGridBlock);
+  })}
+
+  function storageAvailable(type) {
+    let storage;
+    try {
+      storage = window[type];
+      let x = "__storage_test__";
+      storage.setItem(x, x);
+      storage.removeItem(x);
+      return true;
+    } catch (e) {
+      return (
+        e instanceof DOMException &&
+        (e.code === 22 ||
+          e.code === 1014 ||
+          e.name === "QuotaExceededError" ||
+          e.name === "NS_ERROR_DOM_QUOTA_REACHED") &&
+        storage &&
+        storage.length !== 0
+      );
+    }
+  }
+
+
+
+initialGenerateGrid();
 
 resetButton.addEventListener("click", generateGrid);
 colButton.addEventListener("click", setColor);
@@ -218,9 +281,9 @@ fillRandomColorButton.addEventListener("click", fillRandomColors);
 randomPatternButton.addEventListener("click", randomPattern);
 saveButton.addEventListener("click", screenShot);
 
-gridContainer.addEventListener("touchstart", toggleDrawing, false);
-gridContainer.addEventListener("touchend", toggleDrawing, false);
-gridContainer.addEventListener("touchmove", function (e) {
+window.addEventListener("touchstart", toggleDrawingOnOff, false);
+window.addEventListener("touchend", toggleDrawingOnOff, false);
+window.addEventListener("touchmove", function (e) {
   let touch = e.touches[0];
   let mouseEvent = new MouseEvent("mousemove", {
     clientX: touch.clientX,
@@ -236,7 +299,7 @@ gridContainer.ontouchstart = (e) => {
 
 
 
-gridContainer.addEventListener("mousedown", toggleDrawing);
-gridContainer.addEventListener("mouseup", toggleDrawing);
+window.addEventListener("mousedown", toggleDrawingOnOff);
+window.addEventListener("mouseup", toggleDrawingOnOff);
 
 // eggs
