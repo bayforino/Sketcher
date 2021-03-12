@@ -2,7 +2,7 @@
 
 **Sketcher** is a JavaScript-based art application that uses interactive, dynamically generated 'pixels'.
 
-(https://html2canvas.hertzen.com/)**.<img width="478" alt="Screenshot 2021-03-10 at 10 34 32" src="https://user-images.githubusercontent.com/79043342/110940662-286f0c80-832f-11eb-9a27-aebafb1e8e79.png">
+<img width="478" alt="Screenshot 2021-03-10 at 10 34 32" src="https://user-images.githubusercontent.com/79043342/110940662-286f0c80-832f-11eb-9a27-aebafb1e8e79.png">
 
 It uses operations with randomly generated operands and colours to produce cool colourful patterns with the **"rand patt"** button.
 
